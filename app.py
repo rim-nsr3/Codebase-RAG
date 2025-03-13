@@ -16,7 +16,6 @@ from typing import List, Optional
 load_dotenv()
 
 # Initialize Pinecone vector database with error handling
-# Initialize Pinecone vector database with error handling
 try:
     pc = Pinecone(api_key=os.getenv("PINECONE_API_KEY"))
     index_name = "codebase-rag"
@@ -39,27 +38,11 @@ SUPPORTED_EXTENSIONS = {
 }
 
 # Cache the sentence transformer model to prevent reloading on each use
-# Cache the sentence transformer model to prevent reloading on each use
 @st.cache_resource
 def load_sentence_transformer(model_name="sentence-transformers/all-mpnet-base-v2"):
     return SentenceTransformer(model_name)
 
 def get_huggingface_embeddings(text: str, model=None) -> List[float]:
-    """
-    Generates embeddings for the given text using a sentence transformer model.
-    Includes timeout and error handling for reliability.
-    
-    Args:
-        text (str): The text to generate embeddings for
-        model (SentenceTransformer, optional): Pre-loaded model instance
-    
-    Returns:
-        List[float]: Vector embedding of the input text
-        
-    Raises:
-        TimeoutError: If embedding generation takes too long
-        Exception: For other embedding generation failures
-    """
     """
     Generates embeddings for the given text using a sentence transformer model.
     Includes timeout and error handling for reliability.
@@ -104,22 +87,6 @@ def fetch_repo_content(repo_url: str, github_token: str, file_limit: int = 50) -
         ValueError: If GitHub token is missing
         Exception: For repository access or processing failures
     """
-    """
-    Fetches and processes files from a GitHub repository with progress tracking.
-    Handles multiple file types and includes error handling for robustness.
-    
-    Args:
-        repo_url (str): URL of the GitHub repository to process
-        github_token (str): GitHub authentication token
-        file_limit (int): Maximum number of files to process
-    
-    Returns:
-        List[str]: List of file contents as strings
-        
-    Raises:
-        ValueError: If GitHub token is missing
-        Exception: For repository access or processing failures
-    """
     if not github_token:
         raise ValueError("GitHub token is not provided")
 
@@ -135,12 +102,6 @@ def fetch_repo_content(repo_url: str, github_token: str, file_limit: int = 50) -
     progress_bar = st.progress(0)
 
     def fetch_folder(folder_path=""):
-        """
-        Recursive helper function to traverse repository folders and fetch file contents.
-        
-        Args:
-            folder_path (str): Current folder path in the repository
-        """
         """
         Recursive helper function to traverse repository folders and fetch file contents.
         
@@ -292,17 +253,6 @@ def perform_rag(query, namespace):
     Returns:
         str: Generated response based on relevant code context
     """
-    """
-    Performs Retrieval-Augmented Generation to answer queries about the codebase.
-    Combines vector search with LLM processing for intelligent responses.
-    
-    Args:
-        query (str): User's question about the codebase
-        namespace (str): Namespace to search in Pinecone
-    
-    Returns:
-        str: Generated response based on relevant code context
-    """
     try:
         raw_query_embedding = get_huggingface_embeddings(query)
 
@@ -386,7 +336,6 @@ repo_url = st.text_input("Enter GitHub Repository URL:")
 namespace = repo_url
 
 # Repository loading and processing interface
-# Repository loading and processing interface
 if st.button("Load Repository"):
     github_token = os.getenv("GITHUB_TOKEN")
     if not github_token:
@@ -407,19 +356,15 @@ if st.button("Load Repository"):
             st.error(f"Failed to process repository: {str(e)}")
 
 # Chat interface initialization and management
-# Chat interface initialization and management
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-
-# Display chat history
 
 # Display chat history
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-# Handle new user input
 # Handle new user input
 if prompt := st.chat_input("Ask about the repository!"):
     st.session_state.messages.append({"role": "user", "content": prompt})
