@@ -1,7 +1,7 @@
 # Codebase RAG
 
 An AI-powered repository navigator and code explainer that uses Retrieval-Augmented Generation to help you quickly understand any GitHub repository.
-
+...
 ## How It Works
 
 1. The application fetches files from a GitHub repository using the GitHub API
