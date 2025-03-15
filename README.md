@@ -1,6 +1,6 @@
 # Codebase RAG
 
-An AI-powered repository navigator and code explainer that uses Retrieval-Augmented Generation to help you quickly understand any GitHub repository.
+An AI-powered repository navigator and dvudcode explainer that uses Retrieval-Augmented Generation to help you quickly understand any GitHub repository.
 ...
 ## How It Works
 
